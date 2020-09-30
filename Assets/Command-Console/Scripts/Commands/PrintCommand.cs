@@ -1,17 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Console.Scripts;
 using UnityEngine;
+using CommandConsole;
 
-public class PrintCommand : ICommand
-{
-    public void Execute(string args)
-    {
-        CommandConsole.Log(args);
+public class PrintCommand : ICommand {
+    public void Execute(string args) {
+        CommandConsole.CommandConsole.Log(args);
     }
 
-    public string Suggest(string args)
-    {
+    public string Suggest(string args) {
         return "";
     }
 

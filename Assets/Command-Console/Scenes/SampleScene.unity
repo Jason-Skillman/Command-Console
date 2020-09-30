@@ -447,7 +447,7 @@ PrefabInstance:
     - target: {fileID: 7459435159466656576, guid: 6ece8898fc32c5c41b00e9d88d8144d1,
         type: 3}
       propertyPath: m_Name
-      value: GameConsole
+      value: CommandConsole
       objectReference: {fileID: 0}
     - target: {fileID: 7459435159466656582, guid: 6ece8898fc32c5c41b00e9d88d8144d1,
         type: 3}

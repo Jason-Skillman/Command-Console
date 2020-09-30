@@ -6,18 +6,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Console.Scripts {
-    public class CommandConsole : MonoBehaviour {
+namespace CommandConsole {
+    public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
-
-        public RectTransform commandOutput;
-        public GameObject outputPrefab;
 
         [Header("References")]
         [SerializeField]
         private CanvasGroup canvasGroup;
-        public TMP_InputField inputField;
+        [SerializeField]
+        private TMP_InputField inputField;
+        [SerializeField]
+        private RectTransform commandOutput;
+        [SerializeField]
+        private GameObject outputPrefab;
 
         private bool isPlaying = false;
         private Thread mainThread;
@@ -37,7 +39,11 @@ namespace Console.Scripts {
         }
 
         private void Start() {
+            //Start the console closed
             Close();
+
+            //Call the second half of the start method
+            Processor_Start();
         }
 
         private void Update() {

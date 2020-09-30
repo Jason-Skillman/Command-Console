@@ -5,60 +5,29 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Console.Scripts
-{
+namespace CommandConsole {
     [CreateAssetMenu(menuName = "Console/Command List")]
-    public class CommandList : ScriptableObject
-    {
-        
-        //#if UNITY_EDITOR
-        //public List<MonoScript> commands;
-    
+    public class CommandList : ScriptableObject {
+
         [NonSerialized]
         public readonly List<ICommand> LoadedCommands = new List<ICommand>();
-    
-        public void LoadCommands()
-        {
+
+        public void LoadCommands() {
             LoadedCommands.Clear();
 
-            var commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes().Where(t => t != typeof(ICommand) && 
-                                                                                            typeof(ICommand).IsAssignableFrom(t));
-                //Assembly.GetAssembly(typeof(ICommand)).GetTypes()
-                //.Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ICommand)));
+            var commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
             
             CommandConsole.Log($"Loading {commandTypes.Count()} commands");
-            
+
             var objects = new List<ICommand>();
-            foreach (var type in commandTypes)
-            {
+            foreach(var type in commandTypes) {
                 CommandConsole.Log($"Loading command {type.FullName}");
-                var commandInstance = (ICommand) Activator.CreateInstance(type);
-            
+                var commandInstance = (ICommand)Activator.CreateInstance(type);
+
                 LoadedCommands.Add(commandInstance);
             }
-            
-            /*foreach (var command in commands)
-            {
-                var commandInstance = (ICommand) Activator.CreateInstance(command.GetClass());
-            
-                LoadedCommands.Add(commandInstance);
-            }*/
         }
-        //#else
-        /*
-        [NonSerialized]
-        public readonly List<ICommand> LoadedCommands = new List<ICommand> {
-            new GenerateCommand(),
-            new PrintCommand(),
-            new ConnectCommand(),
-            new SetUsernameCommand(),
-            new GiveSkillCommand()
-        };
-    
-        public void LoadCommands()
-        {
-        }
-        //#endif
-        */
+        
     }
 }
