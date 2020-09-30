@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CommandConsole;
+using DebugCommandConsole;
 
 public class PrintCommand : ICommand {
     public void Execute(string args) {
-        CommandConsole.CommandConsole.Log(args);
+       CommandConsole.Instance.Log(args);
     }
 
     public string Suggest(string args) {

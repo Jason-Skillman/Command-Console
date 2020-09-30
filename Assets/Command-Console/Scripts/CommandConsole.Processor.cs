@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-namespace CommandConsole {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         [Header("Processor References")]
@@ -46,7 +46,7 @@ namespace CommandConsole {
             if(command != null) {
                 command.Execute(args);
             } else {
-                CommandConsole.Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
+                Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
             }
 
             _input.text = "";

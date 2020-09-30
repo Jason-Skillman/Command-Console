@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace CommandConsole {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
@@ -24,7 +24,6 @@ namespace CommandConsole {
         private bool isPlaying = false;
         private Thread mainThread;
 
-        private static List<string> logMessages = new List<string>();
         private static List<string> newLogMessages = new List<string>();
 
         public bool IsOpen { get; private set; }
@@ -95,6 +94,8 @@ namespace CommandConsole {
 
         #endregion
 
+        #region DebugLogs
+
         public void AddToGameConsole(string str) {
             if(Thread.CurrentThread == mainThread) {
                 if(isPlaying) {
@@ -108,10 +109,13 @@ namespace CommandConsole {
             }
         }
 
-        #region Print
+        /// <summary>
+        /// Used to simple log text to the console
+        /// </summary>
+        /// <param name="args"></param>
+        public void Log(params object[] args) {
+            StringBuilder sb = new StringBuilder();
 
-        public static void Log(params object[] args) {
-            var sb = new StringBuilder();
             for(var i = 0; i < args.Length; i++) {
                 if(i != 0) {
                     sb.Append(" ");
@@ -119,15 +123,10 @@ namespace CommandConsole {
                 sb.Append(args[i]);
             }
 
-            var str = sb.ToString();
-
-            //Debug.Log("[Game console]: " + str);
-            logMessages.Add(str);
-
-            Instance.AddToGameConsole(str);
+            AddToGameConsole(sb.ToString());
         }
 
-        public static void Warn(params object[] args) {
+        /*public static void Warn(params object[] args) {
             var sb = new StringBuilder();
             sb.Append("<color=yellow>[WARN] ");
             for(var i = 0; i < args.Length; i++) {
@@ -139,9 +138,9 @@ namespace CommandConsole {
             sb.Append("</color>");
 
             Log(sb.ToString());
-        }
+        }*/
 
-        public static void Error(params object[] args) {
+        /*public static void Error(params object[] args) {
             var sb = new StringBuilder();
             sb.Append("<color=red>[ERROR] ");
             for(var i = 0; i < args.Length; i++) {
@@ -153,9 +152,11 @@ namespace CommandConsole {
             sb.Append("</color>");
 
             Log(sb.ToString());
-        }
+        }*/
 
         #endregion
+
+        
 
     }
 }

@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace CommandConsole {
+namespace DebugCommandConsole {
     [CreateAssetMenu(menuName = "Console/Command List")]
     public class CommandList : ScriptableObject {
 
@@ -18,11 +18,11 @@ namespace CommandConsole {
             var commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
                 .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
             
-            CommandConsole.Log($"Loading {commandTypes.Count()} commands");
+            CommandConsole.Instance.Log($"Loading {commandTypes.Count()} commands");
 
             var objects = new List<ICommand>();
             foreach(var type in commandTypes) {
-                CommandConsole.Log($"Loading command {type.FullName}");
+                CommandConsole.Instance.Log($" - {type.FullName}");
                 var commandInstance = (ICommand)Activator.CreateInstance(type);
 
                 LoadedCommands.Add(commandInstance);
