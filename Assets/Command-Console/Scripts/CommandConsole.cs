@@ -46,6 +46,11 @@ namespace DebugCommandConsole {
             //Toggle the command console
             if(Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
+
+                inputField.interactable = false;
+            } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
+                inputField.interactable = true;
+                inputField.text = string.Empty;
             }
         }
 
