@@ -21,9 +21,7 @@ namespace DebugCommandConsole {
         [SerializeField]
         private GameObject outputPrefab;
 
-        private bool isPlaying = false;
-        private Thread mainThread;
-
+        private StringBuilder sb;
         private static List<string> newLogMessages = new List<string>();
 
         public bool IsOpen { get; private set; }
@@ -32,9 +30,8 @@ namespace DebugCommandConsole {
             if(Instance == null) Instance = this;
             else Destroy(gameObject);
             DontDestroyOnLoad(gameObject);
-            
-            isPlaying = Application.isPlaying;
-            mainThread = Thread.CurrentThread;
+
+            sb = new StringBuilder();
         }
 
         private void Start() {
@@ -49,16 +46,6 @@ namespace DebugCommandConsole {
             //Toggle the command console
             if(Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
-            }
-
-            if(newLogMessages.Count <= 0)
-                return;
-
-            var newLogs = newLogMessages;
-            newLogMessages = new List<string>();
-
-            foreach(var log in newLogs) {
-                AddToGameConsole(log);
             }
         }
 
@@ -96,38 +83,30 @@ namespace DebugCommandConsole {
 
         #region DebugLogs
 
-        public void AddToGameConsole(string str) {
-            if(Thread.CurrentThread == mainThread) {
-                if(isPlaying) {
-                    var output = Instantiate(outputPrefab, commandOutput);
-                    output.GetComponentInChildren<TMP_Text>().text = str;
-
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(commandOutput);
-                }
-            } else {
-                newLogMessages.Add(str);
-            }
-        }
-
         /// <summary>
         /// Used to simple log text to the console
         /// </summary>
         /// <param name="args"></param>
         public void Log(params object[] args) {
-            StringBuilder sb = new StringBuilder();
+            sb.Clear();
 
             for(var i = 0; i < args.Length; i++) {
-                if(i != 0) {
-                    sb.Append(" ");
-                }
+                //Adds a space between multible args
+                if(i != 0) sb.Append(" ");
+                
                 sb.Append(args[i]);
             }
 
-            AddToGameConsole(sb.ToString());
+            //Create the text card and set the text
+            GameObject outputCard = Instantiate(outputPrefab, commandOutput);
+            outputCard.GetComponentInChildren<TMP_Text>().text = sb.ToString();
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(commandOutput);
         }
 
         /*public static void Warn(params object[] args) {
-            var sb = new StringBuilder();
+            sb.Clear();
+
             sb.Append("<color=yellow>[WARN] ");
             for(var i = 0; i < args.Length; i++) {
                 if(i != 0) {
@@ -156,7 +135,7 @@ namespace DebugCommandConsole {
 
         #endregion
 
-        
+
 
     }
 }

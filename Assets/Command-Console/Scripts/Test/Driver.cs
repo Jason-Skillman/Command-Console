@@ -6,7 +6,7 @@ public class Driver : MonoBehaviour {
 
     void Update() {
         if(Input.GetKeyDown(KeyCode.Alpha1)) {
-            CommandConsole.Instance.Log("Hello world");
+            CommandConsole.Instance.Log("HelloWorld", "test2", "test3");
         }
     }
 
