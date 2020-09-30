@@ -81,10 +81,10 @@ namespace DebugCommandConsole {
 
         #endregion
 
-        #region DebugLogs
+        #region Logs
 
         /// <summary>
-        /// Used to simple log text to the console
+        /// Prints a log message to the console
         /// </summary>
         /// <param name="args"></param>
         public void Log(params object[] args) {
@@ -104,10 +104,14 @@ namespace DebugCommandConsole {
             LayoutRebuilder.ForceRebuildLayoutImmediate(commandOutput);
         }
 
-        /*public static void Warn(params object[] args) {
+        /// <summary>
+        /// Prints a warning message to the console
+        /// </summary>
+        /// <param name="args"></param>
+        public void LogWarning(params object[] args) {
             sb.Clear();
 
-            sb.Append("<color=yellow>[WARN] ");
+            sb.Append("<color=yellow>[Warning] ");
             for(var i = 0; i < args.Length; i++) {
                 if(i != 0) {
                     sb.Append(" ");
@@ -117,11 +121,16 @@ namespace DebugCommandConsole {
             sb.Append("</color>");
 
             Log(sb.ToString());
-        }*/
+        }
 
-        /*public static void Error(params object[] args) {
-            var sb = new StringBuilder();
-            sb.Append("<color=red>[ERROR] ");
+        /// <summary>
+        /// Prints an error message to the console
+        /// </summary>
+        /// <param name="args"></param>
+        public void LogError(params object[] args) {
+            sb.Clear();
+
+            sb.Append("<color=red>[Error] ");
             for(var i = 0; i < args.Length; i++) {
                 if(i != 0) {
                     sb.Append(" ");
@@ -131,11 +140,9 @@ namespace DebugCommandConsole {
             sb.Append("</color>");
 
             Log(sb.ToString());
-        }*/
+        }
 
         #endregion
-
-
 
     }
 }
