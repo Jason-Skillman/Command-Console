@@ -9,29 +9,46 @@ using UnityEngine.PlayerLoop;
 namespace CommandConsole.Console {
     public partial class CommandConsole : MonoBehaviour {
 
-        [Header("Processor References")]
-        public TMP_Text suggestionText;
-        public TMP_InputField _input;
-
         /// <summary>
         /// Stores all of the loaded commands.
         /// </summary>
         protected readonly List<ICommand> loadedCommands = new List<ICommand>();
 
         private void Processor_Start() {
-            _input.onValueChanged.AddListener(UpdateSuggestion);
+            inputField.onValueChanged.AddListener(UpdateSuggestion);
 
-            _input.onEndEdit.AddListener(commandText => {
+            inputField.onEndEdit.AddListener(commandText => {
                 if(Input.GetKeyDown(KeyCode.Return)) {
                     RunCommand(commandText);
                 }
             });
-            _input.onEndEdit.AddListener(_ => {
-                _input.Select();
-                _input.ActivateInputField();
+            inputField.onEndEdit.AddListener(_ => {
+                inputField.Select();
+                inputField.ActivateInputField();
             });
 
             LoadCommands();
+        }
+
+        /// <summary>
+        /// Collects and stores all of the possible commands.
+        /// </summary>
+        public void LoadCommands() {
+            loadedCommands.Clear();
+
+            //Using C# reflection, find all of the commands in the current assembly
+            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+
+            //Print out all of the loaded commands
+            Log($"Loading {commandTypes.Count()} commands");
+            foreach(Type type in commandTypes) {
+                Log($" - {type.FullName}");
+
+                //Create an instance of the command and add it to the loaded commands list
+                ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
+                loadedCommands.Add(commandInstance);
+            }
         }
 
         private ICommand FindCommand(string label) {
@@ -55,7 +72,7 @@ namespace CommandConsole.Console {
                 Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
             }
 
-            _input.text = "";
+            inputField.text = "";
         }
 
         private void UpdateSuggestion(string commandString) {
@@ -83,28 +100,6 @@ namespace CommandConsole.Console {
             }
 
             suggestionText.text = commandString + suggestion;
-        }
-
-        /// <summary>
-        /// Collects and stores all of the possible commands.
-        /// Uses C# Reflection.
-        /// </summary>
-        public void LoadCommands() {
-            //Todo: delete
-            loadedCommands.Clear();
-
-            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
-                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
-
-            CommandConsole.Instance.Log($"Loading {commandTypes.Count()} commands");
-
-            var objects = new List<ICommand>();
-            foreach(var type in commandTypes) {
-                CommandConsole.Instance.Log($" - {type.FullName}");
-                var commandInstance = (ICommand)Activator.CreateInstance(type);
-
-                loadedCommands.Add(commandInstance);
-            }
         }
 
     }

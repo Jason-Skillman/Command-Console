@@ -17,12 +17,13 @@ namespace CommandConsole.Console {
         [SerializeField]
         private TMP_InputField inputField;
         [SerializeField]
+        public TMP_Text suggestionText;
+        [SerializeField]
         private RectTransform commandOutput;
         [SerializeField]
         private GameObject outputPrefab;
-
+        
         private StringBuilder sb;
-        private static List<string> newLogMessages = new List<string>();
 
         public bool IsOpen { get; private set; }
 
