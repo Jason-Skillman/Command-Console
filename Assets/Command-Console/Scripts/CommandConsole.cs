@@ -9,7 +9,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 
-namespace CommandConsole.Console {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }

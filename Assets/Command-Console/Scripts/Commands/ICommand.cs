@@ -1,4 +1,4 @@
-﻿namespace CommandConsole.Console {
+﻿namespace DebugCommandConsole {
     public interface ICommand {
         void Execute(string[] args);
         string[] SuggestedArgs(string[] args);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace CommandConsole.Console {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         private void OnEnable() {
@@ -97,23 +97,36 @@ namespace CommandConsole.Console {
         }
 
         private void RunCommand(string commandString) {
-            var label = commandString;
-            var args = "";
+            string label = commandString;
+            List<string> args = new List<string>();
 
+            //Parse the command label and args
             if(commandString.IndexOf(' ') > -1) {
                 label = commandString.Substring(0, commandString.IndexOf(' '));
-                args = commandString.Substring(commandString.IndexOf(' ') + 1);
+                args.AddRange(commandString.Substring(commandString.IndexOf(' ') + 1).Split(' '));
+
+                //Check if the last arg is empty
+                if(args[args.Count - 1].Equals(string.Empty)) {
+                    //Remove the last arg if it is empty
+                    args.RemoveAt(args.Count - 1);
+                    //print("last arg is empty");
+                }
             }
 
-            var command = FindCommand(label);
+            //Find the suggestion text
+            suggestionBuilder.Clear();
+            ICommand command = FindCommand(label);
 
+
+            //Run the command if one was found
             if(command != null) {
-                //command.Execute(args);
+                command.Execute(args.ToArray());
             } else {
                 Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
             }
 
-            inputField.text = "";
+            //Clear the input field
+            inputField.text = string.Empty;
         }
 
     }

@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using CommandConsole.Console;
+﻿using DebugCommandConsole;
 
 public class PrintCommand : ICommand {
     public void Execute(string[] args) {
-        CommandConsole.Console.CommandConsole.Instance.Log(args);
+        CommandConsole.Instance.Log(args);
     }
 
     public string[] SuggestedArgs(string[] args) {
-        return new[] { "<text>" };
+        return new[] { 
+            "<text>" 
+        };
     }
 
     public string Label => "print";
