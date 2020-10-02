@@ -4,12 +4,12 @@ using UnityEngine;
 using CommandConsole.Console;
 
 public class PrintCommand : ICommand {
-    public void Execute(string args) {
+    public void Execute(string[] args) {
         CommandConsole.Console.CommandConsole.Instance.Log(args);
     }
 
-    public string Suggest(string args) {
-        return "";
+    public string[] SuggestedArgs(string[] args) {
+        return new[] { "<text>" };
     }
 
     public string Label => "print";

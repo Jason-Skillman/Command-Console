@@ -1,7 +1,7 @@
 ﻿namespace CommandConsole.Console {
     public interface ICommand {
-        void Execute(string args);
-        string Suggest(string args);
+        void Execute(string[] args);
+        string[] SuggestedArgs(string[] args);
 
         string Label { get; }
         string HelpText { get; }

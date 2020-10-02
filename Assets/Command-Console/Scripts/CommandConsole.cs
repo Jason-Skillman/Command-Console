@@ -27,6 +27,7 @@ namespace CommandConsole.Console {
         private GameObject outputPrefab;
         
         private StringBuilder sb;
+        private StringBuilder suggestionBuilder;
 
         public bool IsOpen { get; private set; }
 
@@ -41,6 +42,7 @@ namespace CommandConsole.Console {
             DontDestroyOnLoad(gameObject);
 
             sb = new StringBuilder();
+            suggestionBuilder = new StringBuilder();
         }
 
         private void Start() {
