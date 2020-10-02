@@ -326,7 +326,6 @@ GameObject:
   - component: {fileID: 7459435157858679196}
   - component: {fileID: 7459435157858679197}
   - component: {fileID: 7459435157858679198}
-  - component: {fileID: 5962718787513246626}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -481,24 +480,12 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_RichText: 0
   m_GlobalFontAsset: {fileID: 11400000, guid: e0bbc243a8656ce40a457e57ae2ad5ee, type: 2}
-  m_OnFocusSelectAll: 1
+  m_OnFocusSelectAll: 0
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
---- !u!114 &5962718787513246626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7459435157858679192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a792556b8608cc4384c622f224e8b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7459435157867653829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,11 +1320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e262ad7f4e74cc54abbb5925456cd18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commands: {fileID: 11400000, guid: 45f4b0c1c9cd297478c2c77fb9ea4b16, type: 2}
-  suggestionText: {fileID: 3216753325342364554}
-  _input: {fileID: 7459435157858679198}
   canvasGroup: {fileID: 4924845077154668033}
   inputField: {fileID: 7459435157858679198}
+  suggestionText: {fileID: 3216753325342364554}
   commandOutput: {fileID: 7459435158314035836}
   outputPrefab: {fileID: 8828830712942856672, guid: 7609ee20600e8af4cb74a0ed82cc37ce,
     type: 3}

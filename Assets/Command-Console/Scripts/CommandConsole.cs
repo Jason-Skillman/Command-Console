@@ -49,14 +49,24 @@ namespace CommandConsole.Console {
         }
 
         private void Update() {
-            //Toggle the command console
+            //Handle opening and closing the
             if(Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
 
-                inputField.interactable = false;
+                //Is the console closed
+                if(!IsOpen) {
+                    inputField.interactable = false;
+                    inputField.OnDeselect(null);
+                    EventSystem.current.SetSelectedGameObject(null);
+
+                    inputField.text = inputField.text.Substring(0, inputField.text.Length - 1);
+                }
             } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
-                inputField.interactable = true;
-                inputField.text = string.Empty;
+                //Is the console open
+                if(IsOpen) {
+                    inputField.interactable = true;
+                    inputField.Select();
+                }
             }
         }
 
@@ -83,30 +93,23 @@ namespace CommandConsole.Console {
 
         #region OpenAndClose
 
-        public void Open() {
+        private void Open() {
             IsOpen = true;
 
             canvasGroup.alpha = 1.0f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
-
-            //Select the input field
-            inputField.Select();
         }
 
-        public void Close() {
+        private void Close() {
             IsOpen = false;
 
             canvasGroup.alpha = 0.0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-
-            //Deselect the input field
-            inputField.OnDeselect(null);
-            EventSystem.current.SetSelectedGameObject(null);
         }
 
-        public void Toggle() {
+        private void Toggle() {
             if(IsOpen) Close();
             else Open();
         }
