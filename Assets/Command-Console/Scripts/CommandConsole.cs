@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace DebugCommandConsole {
+namespace CommandConsole.Console {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
@@ -17,12 +17,13 @@ namespace DebugCommandConsole {
         [SerializeField]
         private TMP_InputField inputField;
         [SerializeField]
+        public TMP_Text suggestionText;
+        [SerializeField]
         private RectTransform commandOutput;
         [SerializeField]
         private GameObject outputPrefab;
-
+        
         private StringBuilder sb;
-        private static List<string> newLogMessages = new List<string>();
 
         public bool IsOpen { get; private set; }
 

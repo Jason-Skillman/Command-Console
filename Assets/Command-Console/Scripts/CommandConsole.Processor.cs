@@ -1,35 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-namespace DebugCommandConsole {
+namespace CommandConsole.Console {
     public partial class CommandConsole : MonoBehaviour {
 
-        [Header("Processor References")]
-        public CommandList commands;
-        public TMP_Text suggestionText;
-        public TMP_InputField _input;
+        /// <summary>
+        /// Stores all of the loaded commands.
+        /// </summary>
+        protected readonly List<ICommand> loadedCommands = new List<ICommand>();
 
         private void Processor_Start() {
-            _input.onValueChanged.AddListener(UpdateSuggestion);
+            inputField.onValueChanged.AddListener(UpdateSuggestion);
 
-            _input.onEndEdit.AddListener(commandText => {
+            inputField.onEndEdit.AddListener(commandText => {
                 if(Input.GetKeyDown(KeyCode.Return)) {
                     RunCommand(commandText);
                 }
             });
-            _input.onEndEdit.AddListener(_ => {
-                _input.Select();
-                _input.ActivateInputField();
+            inputField.onEndEdit.AddListener(_ => {
+                inputField.Select();
+                inputField.ActivateInputField();
             });
 
-            commands.LoadCommands();
+            LoadCommands();
+        }
+
+        /// <summary>
+        /// Collects and stores all of the possible commands.
+        /// </summary>
+        public void LoadCommands() {
+            loadedCommands.Clear();
+
+            //Using C# reflection, find all of the commands in the current assembly
+            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+
+            //Print out all of the loaded commands
+            Log($"Loading {commandTypes.Count()} commands");
+            foreach(Type type in commandTypes) {
+                Log($" - {type.FullName}");
+
+                //Create an instance of the command and add it to the loaded commands list
+                ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
+                loadedCommands.Add(commandInstance);
+            }
         }
 
         private ICommand FindCommand(string label) {
-            return commands.LoadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.Equals(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
+            return loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.Equals(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
         }
 
         private void RunCommand(string commandString) {
@@ -49,7 +72,7 @@ namespace DebugCommandConsole {
                 Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
             }
 
-            _input.text = "";
+            inputField.text = "";
         }
 
         private void UpdateSuggestion(string commandString) {
@@ -68,7 +91,7 @@ namespace DebugCommandConsole {
             if(command != null) {
                 suggestion = command.Suggest(args);
             } else if(label != "" && args == "") {
-                var suggestedCommand = commands.LoadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
+                var suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
                 if(suggestedCommand != null) {
                     if(suggestedCommand.Label.Length > commandString.Length) {
                         suggestion = suggestedCommand.Label.Substring(commandString.Length);
@@ -78,5 +101,6 @@ namespace DebugCommandConsole {
 
             suggestionText.text = commandString + suggestion;
         }
+
     }
 }
