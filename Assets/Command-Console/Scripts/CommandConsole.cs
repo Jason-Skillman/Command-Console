@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace DebugCommandConsole {
+namespace CommandConsole.Console {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
