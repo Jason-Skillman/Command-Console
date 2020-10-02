@@ -40,10 +40,19 @@ namespace DebugCommandConsole {
                 }
             }
 
-            //Find the suggestion text
+            //Setup the suggestion builder
             suggestionBuilder.Clear();
-            ICommand command = FindCommand(label);
+            suggestionBuilder.Append(label);
+            suggestionBuilder.Append(" ");
+            //Add in all of the args
+            args.ForEach(a => {
+                suggestionBuilder.Append(a);
+                suggestionBuilder.Append(" ");
+                });
 
+
+            //Search for a command based on the label
+            ICommand command = FindCommand(label);
 
             //Was a command found?
             if(command != null) {
@@ -77,7 +86,7 @@ namespace DebugCommandConsole {
             }
 
             //Append the final suggestion
-            suggestionText.text = label + " " + suggestionBuilder.ToString();
+            suggestionText.text = suggestionBuilder.ToString();
         }
 
         private void InputField_OnEndEdit(string commandString) {
