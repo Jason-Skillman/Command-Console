@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
+using System.Reflection;
+using System.Linq;
 
 namespace CommandConsole.Console {
     public partial class CommandConsole : MonoBehaviour {
@@ -27,6 +30,11 @@ namespace CommandConsole.Console {
 
         public bool IsOpen { get; private set; }
 
+        /// <summary>
+        /// Stores all of the loaded commands.
+        /// </summary>
+        protected readonly List<ICommand> loadedCommands = new List<ICommand>();
+
         private void Awake() {
             if(Instance == null) Instance = this;
             else Destroy(gameObject);
@@ -36,11 +44,8 @@ namespace CommandConsole.Console {
         }
 
         private void Start() {
-            //Start the console closed
             Close();
-
-            //Call the second half of the start method
-            Processor_Start();
+            LoadCommands();
         }
 
         private void Update() {
@@ -52,6 +57,27 @@ namespace CommandConsole.Console {
             } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
                 inputField.interactable = true;
                 inputField.text = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Collects and stores all of the possible commands.
+        /// </summary>
+        public void LoadCommands() {
+            loadedCommands.Clear();
+
+            //Using C# reflection, find all of the commands in the current assembly
+            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+
+            //Print out all of the loaded commands
+            Log($"Loading {commandTypes.Count()} commands");
+            foreach(Type type in commandTypes) {
+                Log($" - {type.FullName}");
+
+                //Create an instance of the command and add it to the loaded commands list
+                ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
+                loadedCommands.Add(commandInstance);
             }
         }
 
