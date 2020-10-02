@@ -44,6 +44,7 @@ namespace CommandConsole.Console {
             suggestionBuilder.Clear();
             ICommand command = FindCommand(label);
 
+
             //Was a command found?
             if(command != null) {
                 //Get all of the suggested args from the command
@@ -64,6 +65,7 @@ namespace CommandConsole.Console {
                 //Add the args strings to the suggestion builder
                 suggestionBuilder.Append(attachment);
             } else if(label != string.Empty) {
+                //Predic what the next command could be based on input
                 ICommand suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label
                     .StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
                 
@@ -74,7 +76,8 @@ namespace CommandConsole.Console {
                 }
             }
 
-            suggestionText.text = commandString + " " + suggestionBuilder.ToString();
+            //Append the final suggestion
+            suggestionText.text = label + " " + suggestionBuilder.ToString();
         }
 
         private void InputField_OnEndEdit(string commandString) {
