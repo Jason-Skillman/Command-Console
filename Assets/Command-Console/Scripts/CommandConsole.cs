@@ -14,8 +14,12 @@ namespace DebugCommandConsole {
 
         public static CommandConsole Instance { get; private set; }
 
-        [Header("References")]
         [SerializeField]
+        [Tooltip("~ key to open. Uses Unity's old input manager.")]
+        private bool useTildeToOpen = true;
+
+        [SerializeField]
+        [Header("References")]
         private CanvasGroup canvasGroup;
         [SerializeField]
         private TMP_InputField inputField;
@@ -51,27 +55,9 @@ namespace DebugCommandConsole {
         }
 
         private void Update() {
-            //Handle opening and closing the
-            if(Input.GetKeyDown(KeyCode.BackQuote)) {
+            //Use tilde key to open/close the console
+            if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote))
                 Toggle();
-
-                //Is the console closed
-                if(!IsOpen) {
-                    inputField.interactable = false;
-                    inputField.OnDeselect(null);
-                    EventSystem.current.SetSelectedGameObject(null);
-
-                    //Cut off the last key (The key used to close the console)
-                    if(inputField.text.Length - 1 >= 0)
-                        inputField.text = inputField.text.Substring(0, inputField.text.Length - 1);
-                }
-            } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
-                //Is the console open
-                if(IsOpen) {
-                    inputField.interactable = true;
-                    inputField.Select();
-                }
-            }
         }
 
         /// <summary>
@@ -97,23 +83,49 @@ namespace DebugCommandConsole {
 
         #region OpenAndClose
 
-        private void Open() {
+        /// <summary>
+        /// Opens the console.
+        /// </summary>
+        public void Open() {
             IsOpen = true;
 
+            //Enable the canvas group
             canvasGroup.alpha = 1.0f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
+
+            //Enable the input field
+            inputField.interactable = true;
+            inputField.Select();
+
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
         }
 
-        private void Close() {
+        /// <summary>
+        /// Closes the console.
+        /// </summary>
+        public void Close() {
             IsOpen = false;
 
+            //Disable the canvas group
             canvasGroup.alpha = 0.0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+
+            //Disable the input field
+            inputField.interactable = false;
+            inputField.OnDeselect(null);
+            EventSystem.current.SetSelectedGameObject(null);
+
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
         }
 
-        private void Toggle() {
+        /// <summary>
+        /// Toggles opening and closing the console.
+        /// </summary>
+        public void Toggle() {
             if(IsOpen) Close();
             else Open();
         }
@@ -123,7 +135,7 @@ namespace DebugCommandConsole {
         #region Logs
 
         /// <summary>
-        /// Prints a log message to the console
+        /// Prints a log message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void Log(params object[] args) {
@@ -144,7 +156,7 @@ namespace DebugCommandConsole {
         }
 
         /// <summary>
-        /// Prints a warning message to the console
+        /// Prints a warning message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void LogWarning(params object[] args) {
@@ -163,7 +175,7 @@ namespace DebugCommandConsole {
         }
 
         /// <summary>
-        /// Prints an error message to the console
+        /// Prints an error message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void LogError(params object[] args) {

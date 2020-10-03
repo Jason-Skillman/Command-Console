@@ -101,7 +101,7 @@ namespace DebugCommandConsole {
         #endregion
 
         /// <summary>
-        /// Finds a command that matches the label
+        /// Finds a command that matches the label.
         /// </summary>
         /// <param name="label">The command label to search for</param>
         /// <returns>The command instance</returns>
@@ -111,9 +111,9 @@ namespace DebugCommandConsole {
         }
 
         /// <summary>
-        /// Runs the command with args
+        /// Runs the command with args.
         /// </summary>
-        /// <param name="commandString">The entire command to run as a string</param>
+        /// <param name="commandString">The entire command to run as a string.</param>
         private void RunCommand(string commandString) {
             string label = commandString;
             List<string> args = new List<string>();
@@ -138,7 +138,7 @@ namespace DebugCommandConsole {
 
             //Run the command if one was found
             if(command != null) {
-                command.Execute(args.ToArray());
+                command.Action(args.ToArray());
             } else {
                 Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
             }

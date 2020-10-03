@@ -1,7 +1,7 @@
 ﻿using DebugCommandConsole;
 
 public class PrintCommand : ICommand {
-    public void Execute(string[] args) {
+    public void Action(string[] args) {
         CommandConsole.Instance.Log(args);
     }
 
@@ -12,5 +12,4 @@ public class PrintCommand : ICommand {
     }
 
     public string Label => "print";
-    public string HelpText => $"{Label} <color=red><string></color>";
 }

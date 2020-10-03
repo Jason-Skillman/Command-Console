@@ -2,7 +2,7 @@
 using System;
 
 public class AdditionCommand : ICommand {
-    public void Execute(string[] args) {
+    public void Action(string[] args) {
         int num1 = int.Parse(args[0]);
         int num2 = int.Parse(args[1]);
         int answer = num1 + num2;
@@ -18,5 +18,4 @@ public class AdditionCommand : ICommand {
     }
 
     public string Label => "add";
-    public string HelpText => $"{Label} <color=red><string></color>";
 }
