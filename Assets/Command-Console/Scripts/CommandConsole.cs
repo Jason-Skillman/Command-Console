@@ -17,6 +17,9 @@ namespace DebugCommandConsole {
         [SerializeField]
         [Tooltip("~ key to open. Uses Unity's old input manager.")]
         private bool useTildeToOpen = true;
+        [SerializeField]
+        [Tooltip("Shows all of the commands that were succesfully loaded into the console on start.")]
+        private bool showLoadedCommandsOnStart = true;
 
         [SerializeField]
         [Header("References")]
@@ -55,9 +58,14 @@ namespace DebugCommandConsole {
         }
 
         private void Update() {
+            //Todo: Fixes a bug where the "`" key is present on the input field when opening the console for the first time
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
+
             //Use tilde key to open/close the console
-            if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote))
+            if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
+            }  
         }
 
         /// <summary>
@@ -71,13 +79,15 @@ namespace DebugCommandConsole {
                 .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
 
             //Print out all of the loaded commands
-            Log($"Loading {commandTypes.Count()} commands");
-            foreach(Type type in commandTypes) {
-                Log($" - {type.FullName}");
+            if(showLoadedCommandsOnStart) {
+                Log($"Loading {commandTypes.Count()} commands");
+                foreach(Type type in commandTypes) {
+                    Log($" - {type.FullName}");
 
-                //Create an instance of the command and add it to the loaded commands list
-                ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
-                loadedCommands.Add(commandInstance);
+                    //Create an instance of the command and add it to the loaded commands list
+                    ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
+                    loadedCommands.Add(commandInstance);
+                }
             }
         }
 
