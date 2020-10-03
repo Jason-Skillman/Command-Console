@@ -48,7 +48,7 @@ namespace DebugCommandConsole {
             args.ForEach(a => {
                 suggestionBuilder.Append(a);
                 suggestionBuilder.Append(" ");
-                });
+            });
 
 
             //Search for a command based on the label
@@ -100,11 +100,20 @@ namespace DebugCommandConsole {
 
         #endregion
 
+        /// <summary>
+        /// Finds a command that matches the label
+        /// </summary>
+        /// <param name="label">The command label to search for</param>
+        /// <returns>The command instance</returns>
         private ICommand FindCommand(string label) {
             return loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.ToLower().Equals(label.ToLower(), 
                 StringComparison.CurrentCultureIgnoreCase));
         }
 
+        /// <summary>
+        /// Runs the command with args
+        /// </summary>
+        /// <param name="commandString">The entire command to run as a string</param>
         private void RunCommand(string commandString) {
             string label = commandString;
             List<string> args = new List<string>();

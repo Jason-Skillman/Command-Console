@@ -61,7 +61,9 @@ namespace DebugCommandConsole {
                     inputField.OnDeselect(null);
                     EventSystem.current.SetSelectedGameObject(null);
 
-                    inputField.text = inputField.text.Substring(0, inputField.text.Length - 1);
+                    //Cut off the last key (The key used to close the console)
+                    if(inputField.text.Length - 1 >= 0)
+                        inputField.text = inputField.text.Substring(0, inputField.text.Length - 1);
                 }
             } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
                 //Is the console open
