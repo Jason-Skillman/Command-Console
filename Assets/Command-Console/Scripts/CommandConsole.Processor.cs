@@ -1,105 +1,150 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using TMPro;
+using System.Text;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
-namespace CommandConsole.Console {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
+        private void OnEnable() {
+            inputField.onValueChanged.AddListener(InputField_OnValueChanged);
+            inputField.onEndEdit.AddListener(InputField_OnEndEdit);
+        }
+
+        private void OnDisable() {
+            inputField.onValueChanged.RemoveListener(InputField_OnValueChanged);
+            inputField.onEndEdit.RemoveListener(InputField_OnEndEdit);
+        }
+
+        #region EventListeners
+
         /// <summary>
-        /// Stores all of the loaded commands.
+        /// Updates the text suggestion when input value changes
         /// </summary>
-        protected readonly List<ICommand> loadedCommands = new List<ICommand>();
+        /// <param name="commandString"></param>
+        private void InputField_OnValueChanged(string commandString) {
+            string label = commandString;
+            List<string> args = new List<string>();
 
-        private void Processor_Start() {
-            inputField.onValueChanged.AddListener(UpdateSuggestion);
+            //Parse the command label and args
+            if(commandString.IndexOf(' ') > -1) {
+                label = commandString.Substring(0, commandString.IndexOf(' '));
+                args.AddRange(commandString.Substring(commandString.IndexOf(' ') + 1).Split(' '));
 
-            inputField.onEndEdit.AddListener(commandText => {
-                if(Input.GetKeyDown(KeyCode.Return)) {
-                    RunCommand(commandText);
+                //Check if the last arg is empty
+                if(args[args.Count - 1].Equals(string.Empty)) {
+                    //Remove the last arg if it is empty
+                    args.RemoveAt(args.Count - 1);
+                    //print("last arg is empty");
                 }
+            }
+
+            //Setup the suggestion builder
+            suggestionBuilder.Clear();
+            suggestionBuilder.Append(label);
+            suggestionBuilder.Append(" ");
+            //Add in all of the args
+            args.ForEach(a => {
+                suggestionBuilder.Append(a);
+                suggestionBuilder.Append(" ");
             });
-            inputField.onEndEdit.AddListener(_ => {
-                inputField.Select();
-                inputField.ActivateInputField();
-            });
 
-            LoadCommands();
-        }
 
-        /// <summary>
-        /// Collects and stores all of the possible commands.
-        /// </summary>
-        public void LoadCommands() {
-            loadedCommands.Clear();
+            //Search for a command based on the label
+            ICommand command = FindCommand(label);
 
-            //Using C# reflection, find all of the commands in the current assembly
-            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
-                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
-
-            //Print out all of the loaded commands
-            Log($"Loading {commandTypes.Count()} commands");
-            foreach(Type type in commandTypes) {
-                Log($" - {type.FullName}");
-
-                //Create an instance of the command and add it to the loaded commands list
-                ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
-                loadedCommands.Add(commandInstance);
-            }
-        }
-
-        private ICommand FindCommand(string label) {
-            return loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.Equals(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        private void RunCommand(string commandString) {
-            var label = commandString;
-            var args = "";
-
-            if(commandString.IndexOf(' ') > -1) {
-                label = commandString.Substring(0, commandString.IndexOf(' '));
-                args = commandString.Substring(commandString.IndexOf(' ') + 1);
-            }
-
-            var command = FindCommand(label);
-
+            //Was a command found?
             if(command != null) {
-                command.Execute(args);
-            } else {
-                Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
-            }
+                //Get all of the suggested args from the command
+                string[] allSuggestedArgs = command.SuggestedArgs(args.ToArray());
 
-            inputField.text = "";
-        }
+                //Append all of the args together
+                string attachment = string.Empty;
+                for(int i = 0; i < allSuggestedArgs.Length; i++) {
+                    //Skip the arg if it is already being used in the commandString
+                    if(i <= args.Count - 1) continue;
+                    
+                    attachment += allSuggestedArgs[i];
 
-        private void UpdateSuggestion(string commandString) {
-            var label = commandString;
-            var args = "";
+                    //Append a space between args
+                    if(i != allSuggestedArgs.Length - 1) attachment += " ";
+                }
 
-            if(commandString.IndexOf(' ') > -1) {
-                label = commandString.Substring(0, commandString.IndexOf(' '));
-                args = commandString.Substring(commandString.IndexOf(' ') + 1);
-            }
-
-            var suggestion = "";
-
-            var command = FindCommand(label);
-
-            if(command != null) {
-                suggestion = command.Suggest(args);
-            } else if(label != "" && args == "") {
-                var suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
+                //Add the args strings to the suggestion builder
+                suggestionBuilder.Append(attachment);
+            } else if(label != string.Empty) {
+                //Predic what the next command could be based on input
+                ICommand suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label
+                    .StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
+                
                 if(suggestedCommand != null) {
                     if(suggestedCommand.Label.Length > commandString.Length) {
-                        suggestion = suggestedCommand.Label.Substring(commandString.Length);
+                        suggestionBuilder.Append(suggestedCommand.Label.Substring(commandString.Length));
                     }
                 }
             }
 
-            suggestionText.text = commandString + suggestion;
+            //Append the final suggestion
+            suggestionText.text = suggestionBuilder.ToString();
+        }
+
+        private void InputField_OnEndEdit(string commandString) {
+            if(Input.GetKeyDown(KeyCode.Return)) {
+                RunCommand(commandString);
+            }
+
+            inputField.Select();
+            inputField.ActivateInputField();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Finds a command that matches the label.
+        /// </summary>
+        /// <param name="label">The command label to search for</param>
+        /// <returns>The command instance</returns>
+        private ICommand FindCommand(string label) {
+            return loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label.ToLower().Equals(label.ToLower(), 
+                StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        /// <summary>
+        /// Runs the command with args.
+        /// </summary>
+        /// <param name="commandString">The entire command to run as a string.</param>
+        private void RunCommand(string commandString) {
+            string label = commandString;
+            List<string> args = new List<string>();
+
+            //Parse the command label and args
+            if(commandString.IndexOf(' ') > -1) {
+                label = commandString.Substring(0, commandString.IndexOf(' '));
+                args.AddRange(commandString.Substring(commandString.IndexOf(' ') + 1).Split(' '));
+
+                //Check if the last arg is empty
+                if(args[args.Count - 1].Equals(string.Empty)) {
+                    //Remove the last arg if it is empty
+                    args.RemoveAt(args.Count - 1);
+                    //print("last arg is empty");
+                }
+            }
+
+            //Find the suggestion text
+            suggestionBuilder.Clear();
+            ICommand command = FindCommand(label);
+
+
+            //Run the command if one was found
+            if(command != null) {
+                command.Action(args.ToArray());
+            } else {
+                Log($"<color=red>Unknown command</color> <color=#FF6666>\"{label}\"</color>");
+            }
+
+            //Clear the input field
+            inputField.text = string.Empty;
         }
 
     }

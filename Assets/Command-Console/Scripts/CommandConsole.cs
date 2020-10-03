@@ -5,14 +5,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
+using System.Reflection;
+using System.Linq;
 
-namespace CommandConsole.Console {
+namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
 
-        [Header("References")]
         [SerializeField]
+        [Tooltip("~ key to open. Uses Unity's old input manager.")]
+        private bool useTildeToOpen = true;
+        [SerializeField]
+        [Tooltip("Shows all of the commands that were succesfully loaded into the console on start.")]
+        private bool showLoadedCommandsOnStart = true;
+
+        [SerializeField]
+        [Header("References")]
         private CanvasGroup canvasGroup;
         [SerializeField]
         private TMP_InputField inputField;
@@ -24,8 +34,14 @@ namespace CommandConsole.Console {
         private GameObject outputPrefab;
         
         private StringBuilder sb;
+        private StringBuilder suggestionBuilder;
 
         public bool IsOpen { get; private set; }
+
+        /// <summary>
+        /// Stores all of the loaded commands.
+        /// </summary>
+        protected readonly List<ICommand> loadedCommands = new List<ICommand>();
 
         private void Awake() {
             if(Instance == null) Instance = this;
@@ -33,53 +49,92 @@ namespace CommandConsole.Console {
             DontDestroyOnLoad(gameObject);
 
             sb = new StringBuilder();
+            suggestionBuilder = new StringBuilder();
         }
 
         private void Start() {
-            //Start the console closed
             Close();
-
-            //Call the second half of the start method
-            Processor_Start();
+            LoadCommands();
         }
 
         private void Update() {
-            //Toggle the command console
-            if(Input.GetKeyDown(KeyCode.BackQuote)) {
-                Toggle();
+            //Todo: Fixes a bug where the "`" key is present on the input field when opening the console for the first time
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
 
-                inputField.interactable = false;
-            } else if(Input.GetKeyUp(KeyCode.BackQuote)) {
-                inputField.interactable = true;
-                inputField.text = string.Empty;
+            //Use tilde key to open/close the console
+            if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote)) {
+                Toggle();
+            }  
+        }
+
+        /// <summary>
+        /// Collects and stores all of the possible commands.
+        /// </summary>
+        public void LoadCommands() {
+            loadedCommands.Clear();
+
+            //Using C# reflection, find all of the commands in the current assembly
+            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+
+            //Print out all of the loaded commands
+            if(showLoadedCommandsOnStart) {
+                Log($"Loading {commandTypes.Count()} commands");
+                foreach(Type type in commandTypes) {
+                    Log($" - {type.FullName}");
+
+                    //Create an instance of the command and add it to the loaded commands list
+                    ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
+                    loadedCommands.Add(commandInstance);
+                }
             }
         }
 
         #region OpenAndClose
 
+        /// <summary>
+        /// Opens the console.
+        /// </summary>
         public void Open() {
             IsOpen = true;
 
+            //Enable the canvas group
             canvasGroup.alpha = 1.0f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            //Select the input field
+            //Enable the input field
+            inputField.interactable = true;
             inputField.Select();
+
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
         }
 
+        /// <summary>
+        /// Closes the console.
+        /// </summary>
         public void Close() {
             IsOpen = false;
 
+            //Disable the canvas group
             canvasGroup.alpha = 0.0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            //Deselect the input field
+            //Disable the input field
+            inputField.interactable = false;
             inputField.OnDeselect(null);
             EventSystem.current.SetSelectedGameObject(null);
+
+            //Clear the input field of the key used to open/close the console
+            inputField.text = inputField.text.Replace("`", string.Empty);
         }
 
+        /// <summary>
+        /// Toggles opening and closing the console.
+        /// </summary>
         public void Toggle() {
             if(IsOpen) Close();
             else Open();
@@ -90,7 +145,7 @@ namespace CommandConsole.Console {
         #region Logs
 
         /// <summary>
-        /// Prints a log message to the console
+        /// Prints a log message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void Log(params object[] args) {
@@ -111,7 +166,7 @@ namespace CommandConsole.Console {
         }
 
         /// <summary>
-        /// Prints a warning message to the console
+        /// Prints a warning message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void LogWarning(params object[] args) {
@@ -130,7 +185,7 @@ namespace CommandConsole.Console {
         }
 
         /// <summary>
-        /// Prints an error message to the console
+        /// Prints an error message to the console.
         /// </summary>
         /// <param name="args"></param>
         public void LogError(params object[] args) {
