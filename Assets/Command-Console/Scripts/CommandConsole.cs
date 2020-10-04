@@ -65,7 +65,11 @@ namespace DebugCommandConsole {
             //Use tilde key to open/close the console
             if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
-            }  
+            }
+            //Use tab to fill in the command text
+            else if(Input.GetKeyDown(KeyCode.Tab)) {
+                FillInByCurrentSuggestion();
+            }
         }
 
         /// <summary>
@@ -88,6 +92,22 @@ namespace DebugCommandConsole {
                     ICommand commandInstance = (ICommand)Activator.CreateInstance(type);
                     loadedCommands.Add(commandInstance);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Fills in the rest of the command based on the current suggestion text
+        /// </summary>
+        public void FillInByCurrentSuggestion() {
+            string newText = suggestionBuilder.ToString(); ;
+
+            if(!newText.Equals(string.Empty)) {
+                inputField.text = suggestionBuilder.ToString();
+
+                inputField.text = inputField.text.Replace(" ", string.Empty);
+                inputField.text += " ";
+
+                inputField.caretPosition = newText.ToCharArray().Length;
             }
         }
 
