@@ -35,6 +35,7 @@ namespace DebugCommandConsole {
         
         private StringBuilder sb;
         private StringBuilder suggestionBuilder;
+        private string previousCommandText;
 
         public bool IsOpen { get; private set; }
 
@@ -69,6 +70,10 @@ namespace DebugCommandConsole {
             //Use tab to fill in the command text
             else if(Input.GetKeyDown(KeyCode.Tab)) {
                 FillInByCurrentSuggestion();
+            }
+            //Use up arrow to use the previously used command
+            else if(Input.GetKeyDown(KeyCode.UpArrow)) {
+                PreviousCommand();
             }
         }
 
@@ -109,6 +114,16 @@ namespace DebugCommandConsole {
 
                 inputField.caretPosition = newText.ToCharArray().Length;
             }
+        }
+
+        /// <summary>
+        /// Fills in the input field text with the last used command
+        /// </summary>
+        public void PreviousCommand() {
+            if(previousCommandText.Equals(string.Empty)) return;
+
+            inputField.text = previousCommandText;
+            inputField.caretPosition = previousCommandText.ToCharArray().Length;
         }
 
         #region OpenAndClose

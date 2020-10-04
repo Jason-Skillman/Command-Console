@@ -10,7 +10,7 @@ public class LoadSceneCommand : ICommand {
         //Load the scene if it exists
         if(Application.CanStreamedLevelBeLoaded(sceneName)) {
             SceneManager.LoadScene(sceneName);
-            CommandConsole.Instance.Log($"Loading scene {sceneName}");
+            CommandConsole.Instance.Log($"Loaded scene {sceneName}");
         } else {
             CommandConsole.Instance.LogError($"Scene {sceneName} does not exist");
         }

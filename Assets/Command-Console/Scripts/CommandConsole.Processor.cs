@@ -118,6 +118,10 @@ namespace DebugCommandConsole {
             string label = commandString;
             List<string> args = new List<string>();
 
+            //Remember the last command
+            if(!commandString.Equals(string.Empty))
+                previousCommandText = commandString;
+
             //Parse the command label and args
             if(commandString.IndexOf(' ') > -1) {
                 label = commandString.Substring(0, commandString.IndexOf(' '));
