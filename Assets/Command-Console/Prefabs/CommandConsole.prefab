@@ -346,7 +346,7 @@ RectTransform:
   m_Children:
   - {fileID: 7459435159146220354}
   m_Father: {fileID: 7459435159473735033}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -905,7 +905,7 @@ RectTransform:
   - {fileID: 7459435158911932447}
   - {fileID: 7459435158713272340}
   m_Father: {fileID: 7459435159473735033}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1320,6 +1320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e262ad7f4e74cc54abbb5925456cd18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTildeToOpen: 1
+  showLoadedCommandsOnStart: 1
   canvasGroup: {fileID: 4924845077154668033}
   inputField: {fileID: 7459435157858679198}
   suggestionText: {fileID: 3216753325342364554}
@@ -1355,16 +1357,16 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7459435157858679199}
   - {fileID: 7459435158851035614}
+  - {fileID: 7459435157858679199}
   m_Father: {fileID: 7459435158147447071}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -200, y: -200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 469.35}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7459435159473735039
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1386,7 +1388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0.78431374}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0.5294118}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
