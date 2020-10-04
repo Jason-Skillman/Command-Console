@@ -7,7 +7,7 @@ public class PrintCommand : ICommand {
 
     public string[] SuggestedArgs(string[] args) {
         return new[] { 
-            "<text>" 
+            "<text>"
         };
     }
 

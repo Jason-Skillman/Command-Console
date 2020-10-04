@@ -108,10 +108,7 @@ namespace DebugCommandConsole {
 
             if(!newText.Equals(string.Empty)) {
                 inputField.text = suggestionBuilder.ToString();
-
                 inputField.text = inputField.text.Replace(" ", string.Empty);
-                inputField.text += " ";
-
                 inputField.caretPosition = newText.ToCharArray().Length;
             }
         }

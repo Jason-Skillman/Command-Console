@@ -9,7 +9,7 @@ public class LoadSceneCommand : ICommand {
 
         //Load the scene if it exists
         if(Application.CanStreamedLevelBeLoaded(sceneName)) {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadSceneAsync(sceneName);
             CommandConsole.Instance.Log($"Loaded scene {sceneName}");
         } else {
             CommandConsole.Instance.LogError($"Scene {sceneName} does not exist");
@@ -18,7 +18,7 @@ public class LoadSceneCommand : ICommand {
 
     public string[] SuggestedArgs(string[] args) {
         return new[] { 
-            "<scene-name>" 
+            "<scene-name>"
         };
     }
 

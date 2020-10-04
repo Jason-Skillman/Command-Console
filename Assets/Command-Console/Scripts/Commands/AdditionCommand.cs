@@ -12,8 +12,8 @@ public class AdditionCommand : ICommand {
 
     public string[] SuggestedArgs(string[] args) {
         return new[] { 
-            "<num 1>", 
-            "<num 2>" 
+            "<num 1>",
+            "<num 2>"
         };
     }
 
