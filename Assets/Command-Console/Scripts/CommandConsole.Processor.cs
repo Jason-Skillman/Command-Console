@@ -59,20 +59,23 @@ namespace DebugCommandConsole {
                 //Get all of the suggested args from the command
                 string[] allSuggestedArgs = command.SuggestedArgs(args.ToArray());
 
-                //Append all of the args together
-                string attachment = string.Empty;
-                for(int i = 0; i < allSuggestedArgs.Length; i++) {
-                    //Skip the arg if it is already being used in the commandString
-                    if(i <= args.Count - 1) continue;
-                    
-                    attachment += allSuggestedArgs[i];
+                //Check if the command has args
+                if(allSuggestedArgs != null) {
+                    //Append all of the args together
+                    string attachment = string.Empty;
+                    for(int i = 0; i < allSuggestedArgs.Length; i++) {
+                        //Skip the arg if it is already being used in the commandString
+                        if(i <= args.Count - 1) continue;
 
-                    //Append a space between args
-                    if(i != allSuggestedArgs.Length - 1) attachment += " ";
+                        attachment += allSuggestedArgs[i];
+
+                        //Append a space between args
+                        if(i != allSuggestedArgs.Length - 1) attachment += " ";
+                    }
+
+                    //Add the args strings to the suggestion builder
+                    suggestionBuilder.Append(attachment);
                 }
-
-                //Add the args strings to the suggestion builder
-                suggestionBuilder.Append(attachment);
             } else if(label != string.Empty) {
                 //Predic what the next command could be based on input
                 ICommand suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label

@@ -235,6 +235,29 @@ namespace DebugCommandConsole {
             Log(sb.ToString());
         }
 
+        /// <summary>
+        /// Prints out all of the loaded commands
+        /// </summary>
+        public void LogAllCommands() {
+            Log("All Commands:");
+            foreach(ICommand command in loadedCommands) {
+                sb.Clear();
+                sb.Append(" - ");
+                sb.Append(command.Label);
+                sb.Append(" ");
+
+                //Append all of the args
+                if(command.SuggestedArgs() != null) {
+                    foreach(string arg in command.SuggestedArgs()) {
+                        sb.Append(arg);
+                        sb.Append(" ");
+                    }
+                }
+                
+                Log(sb.ToString());
+            }
+        }
+
         #endregion
 
     }
