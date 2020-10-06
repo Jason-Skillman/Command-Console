@@ -35,6 +35,7 @@ namespace DebugCommandConsole {
         
         private StringBuilder sb;
         private StringBuilder suggestionBuilder;
+        private string previousCommandText;
 
         public bool IsOpen { get; private set; }
 
@@ -65,7 +66,15 @@ namespace DebugCommandConsole {
             //Use tilde key to open/close the console
             if(useTildeToOpen && Input.GetKeyDown(KeyCode.BackQuote)) {
                 Toggle();
-            }  
+            }
+            //Use tab to fill in the command text
+            else if(Input.GetKeyDown(KeyCode.Tab)) {
+                FillInByCurrentSuggestion();
+            }
+            //Use up arrow to use the previously used command
+            else if(Input.GetKeyDown(KeyCode.UpArrow)) {
+                PreviousCommand();
+            }
         }
 
         /// <summary>
@@ -89,6 +98,29 @@ namespace DebugCommandConsole {
                     loadedCommands.Add(commandInstance);
                 }
             }
+        }
+
+        /// <summary>
+        /// Fills in the rest of the command based on the current suggestion text
+        /// </summary>
+        public void FillInByCurrentSuggestion() {
+            string newText = suggestionBuilder.ToString(); ;
+
+            if(!newText.Equals(string.Empty)) {
+                inputField.text = suggestionBuilder.ToString();
+                inputField.text = inputField.text.Replace(" ", string.Empty);
+                inputField.caretPosition = newText.ToCharArray().Length;
+            }
+        }
+
+        /// <summary>
+        /// Fills in the input field text with the last used command
+        /// </summary>
+        public void PreviousCommand() {
+            if(previousCommandText.Equals(string.Empty)) return;
+
+            inputField.text = previousCommandText;
+            inputField.caretPosition = previousCommandText.ToCharArray().Length;
         }
 
         #region OpenAndClose
@@ -201,6 +233,29 @@ namespace DebugCommandConsole {
             sb.Append("</color>");
 
             Log(sb.ToString());
+        }
+
+        /// <summary>
+        /// Prints out all of the loaded commands
+        /// </summary>
+        public void LogAllCommands() {
+            Log("All Commands:");
+            foreach(ICommand command in loadedCommands) {
+                sb.Clear();
+                sb.Append(" - ");
+                sb.Append(command.Label);
+                sb.Append(" ");
+
+                //Append all of the args
+                if(command.SuggestedArgs() != null) {
+                    foreach(string arg in command.SuggestedArgs()) {
+                        sb.Append(arg);
+                        sb.Append(" ");
+                    }
+                }
+                
+                Log(sb.ToString());
+            }
         }
 
         #endregion
