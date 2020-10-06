@@ -78,9 +78,10 @@ namespace DebugCommandConsole {
                 }
             } else if(label != string.Empty) {
                 //Predic what the next command could be based on input
-                ICommand suggestedCommand = loadedCommands.FirstOrDefault(loadedCommand => loadedCommand.Label
-                    .StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
-                
+                ICommand suggestedCommand = loadedCommands
+                    .OrderBy(cmd => cmd.Label.Length)
+                    .FirstOrDefault(loadedCommand => loadedCommand.Label.StartsWith(label.ToLower(), StringComparison.CurrentCultureIgnoreCase));
+
                 if(suggestedCommand != null) {
                     if(suggestedCommand.Label.Length > commandString.Length) {
                         suggestionBuilder.Append(suggestedCommand.Label.Substring(commandString.Length));
