@@ -23,15 +23,15 @@ namespace DebugCommandConsole {
 
         [SerializeField]
         [Header("References")]
-        private CanvasGroup canvasGroup;
+        private CanvasGroup canvasGroup = null;
         [SerializeField]
-        private TMP_InputField inputField;
+        private TMP_InputField inputField = null;
         [SerializeField]
-        public TMP_Text suggestionText;
+        private TMP_Text suggestionText = null;
         [SerializeField]
-        private RectTransform commandOutput;
+        private RectTransform commandOutput = null;
         [SerializeField]
-        private GameObject outputPrefab;
+        private GameObject outputPrefab = null;
         
         private StringBuilder sb;
         private StringBuilder suggestionBuilder;
