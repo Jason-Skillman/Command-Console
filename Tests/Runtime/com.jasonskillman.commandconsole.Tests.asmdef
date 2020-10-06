@@ -1,0 +1,15 @@
+{
+    "name": "JasonSkillman.CommandConsole.Tests",
+    "references": [
+        "GUID:13e98485fa415f04890e3616415d096a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
