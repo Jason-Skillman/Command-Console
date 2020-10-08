@@ -1,0 +1,17 @@
+{
+    "name": "com.jasonskillman.commandconsole.Editor",
+    "references": [
+        "GUID:13e98485fa415f04890e3616415d096a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
