@@ -1,4 +1,4 @@
-﻿namespace DebugCommandConsole {
+﻿namespace DebugCommandConsole.Commands {
     public interface ICommand {
         /// <summary>
         /// The action to execute when the command is run.

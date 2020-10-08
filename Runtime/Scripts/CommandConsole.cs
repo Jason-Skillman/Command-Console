@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +7,7 @@ using UnityEngine.EventSystems;
 using System;
 using System.Reflection;
 using System.Linq;
+using DebugCommandConsole.Commands;
 
 namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
