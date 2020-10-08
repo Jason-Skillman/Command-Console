@@ -3,6 +3,14 @@ using UnityEngine.SceneManagement;
 
 namespace DebugCommandConsole.Commands {
     public class LoadSceneAdditiveCommand : ICommand {
+        public string Label => "load-scene-additive";
+
+        public string[] SuggestedArgs(string[] args) {
+            return new[] {
+                "<scene-name>"
+            };
+        }
+
         public void Action(string[] args) {
             string sceneName = args[0];
 
@@ -14,13 +22,5 @@ namespace DebugCommandConsole.Commands {
                 CommandConsole.Instance.LogError($"Scene {sceneName} does not exist");
             }
         }
-
-        public string[] SuggestedArgs(string[] args) {
-            return new[] {
-                "<scene-name>"
-            };
-        }
-
-        public string Label => "load-scene-additive";
     }
 }

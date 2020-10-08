@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CommandConsoleEditor {
 
-    [MenuItem("GameObject/Console/CommandConsole", false, 10)]
+    [MenuItem("GameObject/Console/Command Console", false, 10)]
     static void CreateCustomPrimitiveGameObject(MenuCommand menuCommand) {
         //Check if the console has already been created
         CommandConsole existingConsole = GameObject.FindObjectOfType<CommandConsole>();

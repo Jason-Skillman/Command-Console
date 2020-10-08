@@ -2,6 +2,14 @@
 
 namespace DebugCommandConsole.Commands {
     public class UnloadSceneCommand : ICommand {
+        public string Label => "unload-scene";
+
+        public string[] SuggestedArgs(string[] args) {
+            return new[] {
+                "<scene-name>"
+            };
+        }
+
         public void Action(string[] args) {
             string sceneName = args[0];
 
@@ -20,13 +28,5 @@ namespace DebugCommandConsole.Commands {
             //If no loaded scene macthed the scene to unload
             CommandConsole.Instance.LogError($"Scene {sceneName} is not currently loaded");
         }
-
-        public string[] SuggestedArgs(string[] args) {
-            return new[] {
-                "<scene-name>"
-            };
-        }
-
-        public string Label => "unload-scene";
     }
 }

@@ -1,8 +1,6 @@
 ﻿namespace DebugCommandConsole.Commands {
     public class PrintCommand : ICommand {
-        public void Action(string[] args) {
-            CommandConsole.Instance.Log(args);
-        }
+        public string Label => "print";
 
         public string[] SuggestedArgs(string[] args) {
             return new[] {
@@ -10,6 +8,8 @@
             };
         }
 
-        public string Label => "print";
+        public void Action(string[] args) {
+            CommandConsole.Instance.Log(args);
+        }
     }
 }
