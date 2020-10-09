@@ -84,14 +84,23 @@ namespace DebugCommandConsole {
             loadedCommands.Clear();
 
             //Using C# reflection, find all of the commands in the current assembly
-            IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
-                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+            /*IEnumerable<Type> commandTypes = Assembly.GetAssembly(typeof(ICommand)).GetTypes()
+                .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));*/
 
-            //Print out all of the loaded commands
-            if(showLoadedCommandsOnStart) {
-                Log($"Loading {commandTypes.Count()} commands");
+            //Fetch all of the assemblies
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach(Assembly assembly in assemblies) {
+                
+                //Filter out all of the classes that extend ICommand
+                IEnumerable<Type> commandTypes = assembly.GetTypes()
+                    .Where(t => t != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(t));
+
+                if(showLoadedCommandsOnStart && commandTypes.Count() > 0)
+                    Log($"Loading {commandTypes.Count()} commands from {assembly.GetName()}");
+
                 foreach(Type type in commandTypes) {
-                    Log($" - {type.FullName}");
+                    if(showLoadedCommandsOnStart)
+                        Log($" - {type.Name}");
 
                     //Create an instance of the command and add it to the loaded commands list
                     ICommand commandInstance = (ICommand)Activator.CreateInstance(type);

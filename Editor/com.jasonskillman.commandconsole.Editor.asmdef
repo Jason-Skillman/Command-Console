@@ -1,5 +1,5 @@
 {
-    "name": "com.jasonskillman.commandconsole.Editor",
+    "name": "JasonSkillman.CommandConsole.Editor",
     "references": [
         "GUID:13e98485fa415f04890e3616415d096a"
     ],

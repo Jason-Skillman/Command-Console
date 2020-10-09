@@ -4,16 +4,16 @@
 A debug command console that can be used at runtime and easily extendable.
 
 #### **Documentation**
-You can create a new console and add it to your scene by right clicking in the hierarchy "Conosle/Command Console".
+You can create a new console and add it to your scene by right clicking in the hierarchy **"Conosle/Command Console"**. 
+Only one command console should exist within any given scene. 
+The ```EventSystem``` must be present in your scene.
 
-Only one command console should exist within any given scene.
-
-To open the console at runtime use the tilde key "~". This can be disabled in the inspector for custom input remaping.
+To open the console at runtime use the tilde key **"~"**. This can be disabled in the inspector for custom input remaping.
 
 #### **API**
 Custom commands can be written for the command console. This is the heart and soul of the console.
 
-A small list of commands have already been written as examples. Some examples include print, load scene and unload scene. They can be found at "Runtime/Scripts/Commands" starting at the root of the package.
+A small list of commands have already been written as examples. Some examples include print, load scene and unload scene. They can be found at **"Runtime/Scripts/Commands"** starting at the root of this package.
 
  ### **ICommand**
  To create a custom command create a new script and extend the ICommand interface.
