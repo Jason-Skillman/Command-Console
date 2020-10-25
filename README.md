@@ -2,6 +2,20 @@
 
 Unity Package: A debug command console that can be used at runtime and easily extendable.
 
+## How to install
+
+Open up the Unity package manager and click on `Add package from git URL...`.
+
+![Unity package manager from git URL](https://i.imgur.com/XITZW0I.png)
+
+Paste in this repository's url.
+
+`https://github.com/Jason-Skillman/Command-Console.git`
+
+![Unity package manager git URL](https://i.imgur.com/junIlSB.png)
+
+Click `Add` and the package will be installed in your project.
+
 ## How to use
 You can create a new console and add it to your scene by right clicking in the hierarchy `"Console/Command Console"`.
 Only one command console should exist within any given scene. 
