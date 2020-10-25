@@ -1,22 +1,21 @@
 # **Command Console**
 
-#### **Overview**
-A debug command console that can be used at runtime and easily extendable.
+Unity Package: A debug command console that can be used at runtime and easily extendable.
 
-#### **Documentation**
-You can create a new console and add it to your scene by right clicking in the hierarchy **"Conosle/Command Console"**. 
+## **How To Use**
+You can create a new console and add it to your scene by right clicking in the hierarchy `"Console/Command Console"`.
 Only one command console should exist within any given scene. 
-The ```EventSystem``` must be present in your scene.
+The `EventSystem` must also be present in your scene.
 
-To open the console at runtime use the tilde key **"~"**. This can be disabled in the inspector for custom input remaping.
+To open the console at runtime use the tilde key `~`. This can be disabled in the inspector for custom input remaping.
 
-#### **API**
-Custom commands can be written for the command console. This is the heart and soul of the console.
+## **API**
+Custom commands can be written for the command console.
 
-A small list of commands have already been written as examples. Some examples include print, load scene and unload scene. They can be found at **"Runtime/Scripts/Commands"** starting at the root of this package.
+A small list of commands have already been written as examples. Some command examples include print, load scene and unload scene. They can be found at `Runtime/Scripts/Commands` starting at the root of this package.
 
- ### **ICommand**
- To create a custom command create a new script and extend the ICommand interface.
+### **ICommand**
+To create a custom command create a new script and extend the ICommand interface. The console manager will automaticly detect the script and add it to the command list at runtime.
 
 |Property/Method|Description|
 |---|---|
