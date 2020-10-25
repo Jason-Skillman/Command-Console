@@ -1,20 +1,20 @@
-# **Command Console**
+# Command Console
 
 Unity Package: A debug command console that can be used at runtime and easily extendable.
 
-## **How To Use**
+## How to use
 You can create a new console and add it to your scene by right clicking in the hierarchy `"Console/Command Console"`.
 Only one command console should exist within any given scene. 
 The `EventSystem` must also be present in your scene.
 
 To open the console at runtime use the tilde key `~`. This can be disabled in the inspector for custom input remaping.
 
-## **API**
+## API
 Custom commands can be written for the command console.
 
 A small list of commands have already been written as examples. Some command examples include print, load scene and unload scene. They can be found at `Runtime/Scripts/Commands` starting at the root of this package.
 
-### **ICommand**
+### ICommand
 To create a custom command create a new script and extend the ICommand interface. The console manager will automaticly detect the script and add it to the command list at runtime.
 
 |Property/Method|Description|
