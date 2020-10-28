@@ -6,13 +6,13 @@ Unity Package: A debug command console that can be used at runtime and easily ex
 
 Open up the Unity package manager and click on `Add package from git URL...`.
 
-![Unity package manager from git URL](https://i.imgur.com/XITZW0I.png)
+![Unity package manager from git URL](https://i.imgur.com/wRDQU8Z.png)
 
 Paste in this repository's url.
 
 `https://github.com/Jason-Skillman/Command-Console.git`
 
-![Unity package manager git URL](https://i.imgur.com/junIlSB.png)
+![Unity package manager git URL](https://i.imgur.com/sNQYA13.png)
 
 Click `Add` and the package will be installed in your project.
 
