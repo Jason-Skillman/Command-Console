@@ -12,7 +12,7 @@
   "dependencies": {
     "com.unity.textmeshpro": "2.0.1"
   },
-  "relatedPackages": {
+  "testables": {
     "com.jasonskillman.commandconsole.tests": "1.0.0"
   },
   "author": {
