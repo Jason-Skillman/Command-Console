@@ -4,13 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CommandConsoleEditor {
 
     [MenuItem("GameObject/Console/Command Console", false, 10)]
     static void CreateCustomPrimitiveGameObject(MenuCommand menuCommand) {
         //Check if the console has already been created
-        CommandConsole existingConsole = GameObject.FindObjectOfType<CommandConsole>();
+        CommandConsole existingConsole = Object.FindObjectOfType<CommandConsole>();
 
         if(existingConsole != null) {
             Debug.LogWarning("Command console has already been created.");
@@ -19,13 +20,21 @@ public class CommandConsoleEditor {
         }
 
         //Use the asset database to fetch the console prefab
-        GameObject consolePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-            "Packages/com.jasonskillman.commandconsole/Runtime/Prefabs/CommandConsole.prefab");
+        GameObject consolePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.jasonskillman.commandconsole/Runtime/Prefabs/CommandConsole.prefab");
 
         //Instantiate the prefab in the hierarchy
         PrefabUtility.InstantiatePrefab(consolePrefab);
-
+        
         Selection.activeObject = consolePrefab;
+        
+        
+        //Instantiate an EventSystem if one does not exist
+        GameObject eventSystem = GameObject.Find("EventSystem");
+        if(eventSystem != null) return;
+        
+        eventSystem = new GameObject("EventSystem");
+        eventSystem.AddComponent<EventSystem>();
+        eventSystem.AddComponent<StandaloneInputModule>();
     }
 
 }
