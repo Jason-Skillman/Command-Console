@@ -19,10 +19,5 @@
     "name": "Jason Skillman",
     "email": "jason_skillman@outlook.com",
     "url": "https://github.com/Jason-Skillman"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:Jason-Skillman/Command-Console.git",
-    "revision": "e1ff04caa04e5589ecbad6c9bf4f0caff1889e72"
   }
 }
