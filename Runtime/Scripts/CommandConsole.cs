@@ -59,7 +59,7 @@ namespace DebugCommandConsole {
         }
 
         private void Update() {
-            //Todo: Fixes a bug where the "`" key is present on the input field when opening the console for the first time
+            //Fixes an error where the "`" key is present on the input field when opening the console for the first time
             //Clear the input field of the key used to open/close the console
             inputField.text = inputField.text.Replace("`", string.Empty);
 
