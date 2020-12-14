@@ -10,7 +10,7 @@
   ],
   "category": "Debug Tool",
   "dependencies": {
-    "com.unity.textmeshpro": "2.0.1"
+    "com.unity.textmeshpro": "2.0.0"
   },
   "testables": {
     "com.jasonskillman.commandconsole.tests": "1.0.0"
