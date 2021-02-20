@@ -1,15 +1,12 @@
 ﻿using DebugCommandConsole;
-using NUnit.Framework.Internal;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CommandConsoleEditor {
+public class CreateCommandConsoleEditor {
 
     [MenuItem("GameObject/Console/Command Console", false, 10)]
-    static void CreateCustomPrimitiveGameObject(MenuCommand menuCommand) {
+    static void CreateCommandConsole(MenuCommand menuCommand) {
         //Check if the console has already been created
         CommandConsole existingConsole = Object.FindObjectOfType<CommandConsole>();
 
@@ -20,7 +17,8 @@ public class CommandConsoleEditor {
         }
 
         //Use the asset database to fetch the console prefab
-        GameObject consolePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.jasonskillman.commandconsole/Runtime/Prefabs/CommandConsole.prefab");
+        GameObject consolePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+            "Packages/com.jasonskillman.commandconsole/Runtime/Prefabs/CommandConsole.prefab");
 
         //Instantiate the prefab in the hierarchy
         PrefabUtility.InstantiatePrefab(consolePrefab);
