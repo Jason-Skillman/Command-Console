@@ -16,7 +16,16 @@ Paste in this repository's url.
 
 Click `Add` and the package will be installed in your project.
 
-## How to use
+---
+**NOTE:** For Unity version 2019.2 or lower
+
+If you are using Unity 2019.2 or lower than you will not be able to install the package with the above method. Here are a few other ways to install the package.
+1. You can clone this git repository into your project's `Packages` folder.
+1. Another alternative would be to download this package from GitHub as a zip file. Unzip and in the `Package Manager` click on `Add package from disk...` and select the package's root folder.
+
+---
+
+## How to setup
 You can create a new console and add it to your scene by right clicking in the hierarchy `"Console/Command Console"`.
 Only one command console should exist within any given scene. 
 The `EventSystem` must also be present in your scene.
