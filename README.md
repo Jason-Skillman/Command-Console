@@ -25,6 +25,13 @@ If you are using Unity 2019.2 or lower than you will not be able to install the 
 
 ---
 
+### Git submodule
+Alternatively you can also install this package as a git submodule.
+
+```console
+$ git submodule add https://github.com/Jason-Skillman/Command-Console.git Packages/Command-Console
+```
+
 ## How to setup
 You can create a new console and add it to your scene by right clicking in the hierarchy `"Console/Command Console"`.
 Only one command console should exist within any given scene. 
