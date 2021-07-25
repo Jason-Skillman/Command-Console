@@ -1,5 +1,8 @@
 # Code Editor Package for Command Console
 
+## [1.0.4] - 07/24/2021
+- Updated assembly definition names.
+
 ## [1.0.3] - 11/02/2020
 - When creating a command console in the hierarchy an EventSystem will be created if one does not exist.
 
