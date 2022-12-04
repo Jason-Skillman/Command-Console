@@ -1,5 +1,8 @@
 # Code Editor Package for Command Console
 
+## [1.0.5] - 12/04/2022
+- Updated namespace.
+
 ## [1.0.4] - 07/24/2021
 - Updated assembly definition names.
 
