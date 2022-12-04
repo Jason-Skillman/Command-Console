@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System;
-using System.Reflection;
-using System.Linq;
-using DebugCommandConsole.Commands;
+﻿namespace JasonSkillman.Console {
+    using System.Collections.Generic;
+    using System.Text;
+    using TMPro;
+    using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.EventSystems;
+    using System;
+    using System.Reflection;
+    using System.Linq;
+    using JasonSkillman.Console.Commands;
 
-namespace DebugCommandConsole {
     public partial class CommandConsole : MonoBehaviour {
 
         public static CommandConsole Instance { get; private set; }
