@@ -1,6 +1,6 @@
-﻿using UnityEngine.SceneManagement;
-
-namespace DebugCommandConsole.Commands {
+﻿namespace JasonSkillman.Console.Commands {
+    using UnityEngine.SceneManagement;
+    
     public class UnloadSceneCommand : ICommand {
         public string Label => "unload-scene";
 

@@ -1,5 +1,6 @@
 {
     "name": "JasonSkillman.CommandConsole.Tests",
+    "rootNamespace": "JasonSkillman.Command.Tests",
     "references": [
         "GUID:13e98485fa415f04890e3616415d096a"
     ],

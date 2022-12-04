@@ -1,7 +1,7 @@
 {
   "name": "com.jasonskillman.commandconsole",
   "displayName": "Command Console",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "unity": "2019.3",
   "description": "A debug console that can be used by developers to debug at runtime.",
   "keywords": [

@@ -1,4 +1,4 @@
-﻿namespace DebugCommandConsole.Commands {
+﻿namespace JasonSkillman.Console.Commands {
     public class HelpCommand : ICommand {
         public string Label => "help";
 

@@ -1,11 +1,11 @@
-﻿using DebugCommandConsole.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-namespace DebugCommandConsole {
-    public partial class CommandConsole : MonoBehaviour {
+﻿namespace JasonSkillman.Console {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using JasonSkillman.Console.Commands;
+    using UnityEngine;
+    
+    public partial class CommandConsole {
 
         private void OnEnable() {
             inputField.onValueChanged.AddListener(InputField_OnValueChanged);

@@ -1,4 +1,4 @@
-﻿namespace DebugCommandConsole.Commands {
+﻿namespace JasonSkillman.Console.Commands {
     public interface ICommand {
         /// <summary>
         /// The command's label/header.
